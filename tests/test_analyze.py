@@ -1,5 +1,6 @@
 from backend.sentiment_hf import predict
 
+
 def test_fallback_or_model():
     texts = [
         "I love this movie, it was amazing!",
