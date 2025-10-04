@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -7,22 +7,65 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install deps
+          cache: 'pip'
+      
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Lint
+      
+      - name: Lint with flake8
         run: flake8 backend tests
-      - name: Tests
+      
+      - name: Run tests
         env:
           OMDB_API_KEY: "DUMMY"
           TMDB_API_KEY: "DUMMY"
           DATA_DIR: "backend/data"
-        run: pytest -q
+        run: pytest -v
+      
+      - name: Build Docker image
+        run: docker build -t movie-sentiment-analyzer:${{ github.sha }} .
+      
+      - name: Cache Docker image
+        uses: actions/cache@v3
+        with:
+          path: /tmp/docker-image
+          key: docker-image-${{ github.sha }}
+          restore-keys: docker-image-
+
+  deploy:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/movie-sentiment-analyzer:latest,${{ secrets.DOCKER_USERNAME }}/movie-sentiment-analyzer:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
