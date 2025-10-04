@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Sentiment Analyzer — Elegant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="hero glass fade-in">
+      <div class="hero-inner">
+        <div class="brand">
+          <div class="logo">🎬</div>
+          <div class="titles">
+            <h1>Movie Sentiment Analyzer</h1>
+            <p>OMDb metadata • TMDb user reviews • JSON • Functional pipeline</p>
+          </div>
+        </div>
+        <div class="searchbar row">
+          <input id="searchQuery" placeholder="ค้นหาหนัง เช่น Dune, Interstellar, Joker..." />
+          <button id="btnSearch" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 21l-4.3-4.3M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            ค้นหา
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card glass lift">
+        <h2>ผลการค้นหา</h2>
+        <div id="searchGrid" class="grid"></div>
+      </section>
+
+      <section class="card glass lift">
+        <div class="section-head">
+          <h2>ภาพรวมภาพยนตร์ที่เลือก</h2>
+          <div class="row id-row">
+            <input id="imdbId" placeholder="เช่น tt1160419" />
+            <button id="btnFetch" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 12h18M12 3v18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              ดึงข้อมูล
+            </button>
+          </div>
+        </div>
+        <div id="movieCard" class="movie-card"></div>
+      </section>
+
+      <section class="card glass lift">
+        <h2>รีวิว & วิเคราะห์ความรู้สึก</h2>
+
+        <div class="toolbar">
+          <label class="file btn btn-muted">
+            <input type="file" id="reviewsFile" hidden />
+            <span>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Upload
+            </span>
+          </label>
+
+          <button id="btnUseSample" class="btn btn-muted">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12h16M4 12l4-4m-4 4l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Use Sample
+          </button>
+
+          <button id="btnGenMock" class="btn btn-muted">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Generate Mock Reviews
+          </button>
+
+          <button id="btnFetchTMDb" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Fetch TMDb Reviews
+          </button>
+
+          <div class="spacer"></div>
+
+          <button id="btnExport" class="btn btn-outline">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 10l5-5 5 5M12 5v12M5 19h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Export CSV
+          </button>
+        </div>
+
+        <div class="analytics">
+          <div class="chart-panel glass">
+            <h3>สัดส่วนความรู้สึก</h3>
+            <div id="donutChart" class="chart"></div>
+          </div>
+          <div class="chart-panel glass">
+            <h3>จำนวนรีวิว</h3>
+            <div id="barChart" class="chart"></div>
+          </div>
+        </div>
+
+        <div id="statsCards" class="stats"></div>
+
+        <div class="reviews">
+          <h3>รายการรีวิว (ล่าสุด)</h3>
+          <div id="reviewsList" class="reviews-list"></div>
+        </div>
+      </section>
+
+      <section class="card glass lift">
+        <h2>ทดลองวิเคราะห์ข้อความเดี่ยว</h2>
+        <div class="row">
+          <input id="oneText" placeholder="พิมพ์ประโยคที่นี่..." />
+          <button id="btnOneText" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 12h18M12 3v18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Analyze
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot glass">
+      <div class="container foot-inner">
+        <span>Built for Final Term Project • FastAPI + OMDb + TMDb + Hugging Face</span>
+      </div>
+    </footer>
+
+    <!-- Toasts & Spinner -->
+    <div id="toastWrap" class="toast-wrap"></div>
+    <div id="spinner" class="spinner hidden">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
