@@ -8,7 +8,7 @@
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)
 
 **AI-powered movie sentiment analysis with beautiful web interface**
-
+## ✨ Website project https://movie-sentiment-analyzer-ti2c.onrender.com/
 </div>
 
 ---
@@ -275,19 +275,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📞 Support
-
-- 📧 **Email**: your.email@example.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/movie-sentiment-analyzer/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/movie-sentiment-analyzer/discussions)
-- 📖 **Documentation**: [Wiki](https://github.com/yourusername/movie-sentiment-analyzer/wiki)
-
----
 
 <div align="center">
 
 **⭐ Star this repository if you found it helpful!**
 
-Made with ❤️ by [Your Name](https://github.com/yourusername)
 
 </div>
