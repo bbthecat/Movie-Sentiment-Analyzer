@@ -173,6 +173,22 @@ def reviews_generate(imdb_id: str, count: int = 40):
     save_reviews(imdb_id, rows)
     return {"ok": True, "count": len(rows), "note": "mock reviews generated"}
 
+# -------- Reviews: add single comment --------
+@app.post("/api/reviews/{imdb_id}/add")
+def reviews_add(imdb_id: str, payload: dict):
+    text = (payload or {}).get("text", "").strip()
+    source = (payload or {}).get("source")
+    if not text:
+        raise HTTPException(400, "Missing 'text'")
+
+    existing = load_reviews(imdb_id) or []
+    ts = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    new_item = {"text": text, "source": source or "user", "timestamp": ts}
+    # append and persist full list
+    existing.append(new_item)
+    save_reviews(imdb_id, existing)
+    return {"ok": True, "count": len(existing), "added": new_item}
+
 # -------- Reviews: import from TMDb --------
 @app.post("/api/reviews/{imdb_id}/import/tmdb")
 def reviews_import_tmdb(imdb_id: str, max_pages: int = 1):
