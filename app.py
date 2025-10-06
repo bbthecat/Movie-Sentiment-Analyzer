@@ -1,6 +1,7 @@
 from __future__ import annotations
 from fastapi import FastAPI, UploadFile, File, HTTPException, Response
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
 import csv, io, os, json, datetime
@@ -32,19 +33,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve frontend
+frontend_path = os.path.join(os.path.dirname(__file__), "frontend")
+app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+
 # Health check endpoint
 @app.get("/api/health")
 def health():
     return {"ok": True, "status": "healthy", "platform": "vercel"}
 
-# Root endpoint
-@app.get("/")
+# Root endpoint - serve frontend
+@app.get("/", response_class=HTMLResponse)
 def root():
-    return {
-        "message": "Movie Sentiment Analyzer API",
-        "docs": "/docs",
-        "health": "/api/health"
-    }
+    html_path = os.path.join(frontend_path, "index.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    else:
+        return HTMLResponse(content="""
+        <html>
+            <head><title>Movie Sentiment Analyzer</title></head>
+            <body>
+                <h1>🎬 Movie Sentiment Analyzer</h1>
+                <p>API is running! Frontend files not found.</p>
+                <p><a href="/docs">API Documentation</a></p>
+                <p><a href="/api/health">Health Check</a></p>
+            </body>
+        </html>
+        """)
 
 # -------- Movies (OMDb) --------
 @app.get("/api/movies/search")

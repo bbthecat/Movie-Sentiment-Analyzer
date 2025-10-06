@@ -1,116 +1,296 @@
-# Movie Sentiment Analyzer — COMPLETE (Functional + JSON + OMDb + TMDb + HF Sentiment)
+# 🎬 Movie Sentiment Analyzer
 
-A polished FastAPI app that:
-- Fetches movie metadata from **OMDb** (public API).
-- Imports **user reviews** from **TMDb** (The Movie Database) by IMDb ID.
-- Lets you **Upload** CSV/JSON reviews, or **Generate Mock** reviews for demos.
-- Runs **Hugging Face sentiment** (with an offline-friendly **fallback**) to classify POS/NEG/NEU.
-- Persists everything to **JSON files** and visualizes results in a **beautiful UI** (posters, charts, stats, review cards).
+<div align="center">
 
-## ✅ Features
-- **Public API Integration**: OMDb (metadata), TMDb (reviews import). Optional Trakt (comments) stub ready.
-- **Persistence**: JSON under `backend/data/{movies,reviews,analysis}`.
-- **Functional Style**: `fetch → analyze → persist → visualize` broken into small modules.
-- **CI/CD + Tests**: `pytest`, `flake8`, GitHub Actions, and a local CI script.
-- **No network in tests**: tests avoid external calls; sentiment has a fallback.
+![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)
+
+**AI-powered movie sentiment analysis with beautiful web interface**
+
+[🚀 Live Demo](#) • [📖 Documentation](#) • [🐛 Report Bug](#) • [💡 Request Feature](#)
+
+</div>
 
 ---
 
-## Quickstart
+## ✨ Features
 
-### 1) Install
+### 🎯 Core Functionality
+- **🔍 Movie Search** - Find movies using OMDb API
+- **📊 Sentiment Analysis** - AI-powered review analysis using Hugging Face models
+- **📈 Beautiful Dashboard** - Interactive charts and statistics
+- **💾 Data Persistence** - JSON-based storage system
+- **🔄 Multiple Data Sources** - Upload, generate, or import from TMDb
+
+### 🛠️ Technical Features
+- **⚡ FastAPI Backend** - High-performance async API
+- **🎨 Modern Frontend** - Responsive web interface
+- **🐳 Docker Support** - Easy deployment with containers
+- **🧪 Comprehensive Testing** - Unit tests with pytest
+- **📱 Mobile Friendly** - Responsive design for all devices
+
+### 🌐 API Integrations
+- **OMDb API** - Movie metadata and search
+- **TMDb API** - Real movie reviews import
+- **Hugging Face** - State-of-the-art sentiment analysis models
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.11+
+- API keys for OMDb and TMDb (optional but recommended)
+
+### 1. Clone & Install
 ```bash
+git clone https://github.com/yourusername/movie-sentiment-analyzer.git
+cd movie-sentiment-analyzer
 pip install -r requirements.txt
-cp .env.sample .env
-# Put your keys into .env:
-# OMDB_API_KEY=...
-# TMDB_API_KEY=...
 ```
 
-### 2) Run (dev)
+### 2. Environment Setup
 ```bash
-uvicorn backend.app:app --reload
+cp env.example .env
+# Edit .env and add your API keys:
+# OMDB_API_KEY=your_omdb_key_here
+# TMDB_API_KEY=your_tmdb_key_here
 ```
-Open http://127.0.0.1:8000/
 
-### 3) Docker (optional)
+### 3. Run the Application
 ```bash
-docker compose up --build
+# Development server
+uvicorn app:app --reload
+
+# Or using Docker
+docker-compose up --build
+```
+
+### 4. Open Your Browser
+Navigate to [http://localhost:8000](http://localhost:8000) and start analyzing! 🎉
+
+---
+
+## 🎮 How to Use
+
+### 1. **Search for a Movie**
+- Enter a movie title in the search box
+- Select from the dropdown results
+
+### 2. **Add Reviews**
+Choose one of these options:
+- **📁 Upload CSV/JSON** - Upload your own review files
+- **🎲 Generate Mock Data** - Create sample reviews for testing
+- **🌐 Import from TMDb** - Fetch real reviews from The Movie Database
+
+### 3. **Analyze Sentiment**
+- Click "Analyze Reviews" to run AI sentiment analysis
+- View results with beautiful charts and statistics
+
+### 4. **Export Results**
+- Download analysis as CSV
+- View detailed breakdown of each review
+
+---
+
+## 📊 API Endpoints
+
+### 🎬 Movie Operations
+```http
+GET  /api/movies/search?query={title}     # Search movies
+GET  /api/movies/{imdb_id}                # Get movie details
+```
+
+### 📝 Review Management
+```http
+POST /api/reviews/{imdb_id}/upload        # Upload CSV/JSON reviews
+POST /api/reviews/{imdb_id}/use-sample    # Use sample data
+POST /api/reviews/{imdb_id}/generate      # Generate mock reviews
+POST /api/reviews/{imdb_id}/import/tmdb   # Import from TMDb
+```
+
+### 🧠 Analysis & Results
+```http
+POST /api/analyze/{imdb_id}               # Run sentiment analysis
+GET  /api/summary/{imdb_id}               # Get analysis summary
+GET  /api/analysis/{imdb_id}              # Get detailed results
+GET  /api/export/{imdb_id}.csv            # Export as CSV
+POST /api/analyze-text                    # Analyze single text
+```
+
+### 🔧 System
+```http
+GET  /api/health                          # Health check
+GET  /docs                               # API documentation
 ```
 
 ---
 
-## .env Settings
+## 🏗️ Project Structure
+
 ```
-OMDB_API_KEY=your_omdb_key
-TMDB_API_KEY=your_tmdb_key
+movie-sentiment-analyzer/
+├── 🎬 app.py                    # Main FastAPI application
+├── 📁 backend/                  # Backend modules
+│   ├── app.py                   # Alternative app entry point
+│   ├── config.py                # Configuration settings
+│   ├── models.py                # Pydantic models
+│   ├── omdb_client.py           # OMDb API client
+│   ├── tmdb_client.py           # TMDb API client
+│   ├── sentiment_hf.py          # Hugging Face sentiment
+│   ├── persistence_json.py      # JSON data persistence
+│   └── data/                    # Data storage
+│       ├── movies/              # Movie metadata
+│       ├── reviews/             # Review data
+│       ├── analysis/            # Analysis results
+│       └── samples/             # Sample data
+├── 🎨 frontend/                 # Frontend files
+│   ├── index.html               # Main HTML page
+│   ├── styles.css               # Styling
+│   └── app.js                   # JavaScript logic
+├── 🧪 tests/                    # Test files
+│   ├── test_analyze.py          # Analysis tests
+│   └── test_fetch.py            # API tests
+├── 🐳 Dockerfile                # Docker configuration
+├── 🐳 docker-compose.yml        # Docker Compose setup
+├── 📋 requirements.txt          # Python dependencies
+├── ⚙️ render.yaml               # Render deployment config
+├── 📖 RENDER-DEPLOY.md          # Render deployment guide
+└── 📄 env.example               # Environment variables template
+```
+
+---
+
+## 🚀 Deployment
+
+### 🌐 Render (Recommended)
+```bash
+# 1. Push to GitHub
+git add .
+git commit -m "Ready for deployment"
+git push origin main
+
+# 2. Connect to Render
+# - Go to https://dashboard.render.com
+# - Create new Blueprint
+# - Connect your GitHub repo
+# - Set environment variables
+# - Deploy!
+```
+
+📖 **[Complete Render Deployment Guide](RENDER-DEPLOY.md)**
+
+### 🐳 Docker
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Or build manually
+docker build -t movie-sentiment-analyzer .
+docker run -p 8000:8000 movie-sentiment-analyzer
+```
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+```bash
+# Required API Keys
+OMDB_API_KEY=your_omdb_api_key_here
+TMDB_API_KEY=your_tmdb_api_key_here
+
+# Optional Settings
 HF_MODEL_NAME=distilbert-base-uncased-finetuned-sst-2-english
 DATA_DIR=backend/data
-# Optional Trakt (not required)
-TRAKT_CLIENT_ID=
 ```
 
-> If `OMDB_API_KEY` missing ⇒ OMDb endpoints are temporarily disabled (cached-only).  
-> If `TMDB_API_KEY` missing ⇒ the **Fetch TMDb Reviews** button will fail with a clear error.  
-> `HF_MODEL_NAME` can be swapped to another sentiment model if desired.
+### API Keys Setup
+1. **OMDb API**: Get free key at [omdbapi.com](http://www.omdbapi.com/apikey.aspx)
+2. **TMDb API**: Get free key at [themoviedb.org](https://www.themoviedb.org/settings/api)
 
 ---
 
-## Endpoints (main)
-- `GET /api/health`
-- `GET /api/movies/search?query=...`
-- `GET /api/movies/{imdb_id}`
-- `POST /api/reviews/{imdb_id}/upload` (CSV/JSON)
-- `POST /api/reviews/{imdb_id}/use-sample`
-- `POST /api/reviews/{imdb_id}/generate?count=40`
-- `POST /api/reviews/{imdb_id}/import/tmdb?max_pages=1`
-- `POST /api/analyze/{imdb_id}`
-- `GET /api/summary/{imdb_id}`
-- `GET /api/analysis/{imdb_id}` (detailed rows)
-- `GET /api/export/{imdb_id}.csv`
-- `POST /api/analyze-text` (single snippet; not persisted)
+## 🧪 Testing
 
-**Frontend** is available at `/` and calls these endpoints.
+```bash
+# Run all tests
+pytest
 
----
+# Run with coverage
+pytest --cov=backend
 
-## Project Structure
-```
-movie-sentiment-analyzer-complete/
-├─ backend/
-│  ├─ app.py
-│  ├─ config.py
-│  ├─ models.py
-│  ├─ omdb_client.py
-│  ├─ tmdb_client.py
-│  ├─ sentiment_hf.py
-│  ├─ persistence_json.py
-│  └─ data/
-│     ├─ movies/
-│     ├─ reviews/
-│     ├─ analysis/
-│     └─ samples/
-│        └─ reviews_dune.json
-├─ frontend/
-│  ├─ index.html
-│  ├─ styles.css
-│  └─ app.js
-├─ tests/
-│  ├─ test_analyze.py
-│  └─ test_fetch.py
-├─ scripts/
-│  └─ ci_simulate.sh
-├─ .github/workflows/
-│  └─ ci.yml
-├─ .env.sample
-├─ requirements.txt
-├─ Dockerfile
-├─ docker-compose.yml
-└─ README.md
+# Run specific test file
+pytest tests/test_analyze.py
 ```
 
 ---
 
-## Notes
-- TMDb terms require attribution if used in production; keep usage within TOS.
-- This template favors robustness: if the HF model cannot be downloaded, fallback scoring keeps your flows working for demos/tests.
+## 📈 Performance
+
+- **⚡ Fast Response Times** - Optimized FastAPI backend
+- **🧠 Efficient AI Models** - Lightweight sentiment analysis
+- **💾 Smart Caching** - Reduces API calls and improves speed
+- **📱 Responsive Design** - Works on all devices
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Development Setup
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/movie-sentiment-analyzer.git
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest
+
+# Start development server
+uvicorn app:app --reload
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **OMDb** - For providing free movie data API
+- **TMDb** - For comprehensive movie database
+- **Hugging Face** - For state-of-the-art NLP models
+- **FastAPI** - For the amazing web framework
+- **Contributors** - Thank you for your contributions!
+
+---
+
+## 📞 Support
+
+- 📧 **Email**: your.email@example.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/movie-sentiment-analyzer/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/movie-sentiment-analyzer/discussions)
+- 📖 **Documentation**: [Wiki](https://github.com/yourusername/movie-sentiment-analyzer/wiki)
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you found it helpful!**
+
+Made with ❤️ by [Your Name](https://github.com/yourusername)
+
+</div>
