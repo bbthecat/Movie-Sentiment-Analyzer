@@ -275,14 +275,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📞 Support
-
-- 📧 **Email**: your.email@example.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/movie-sentiment-analyzer/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/movie-sentiment-analyzer/discussions)
-- 📖 **Documentation**: [Wiki](https://github.com/yourusername/movie-sentiment-analyzer/wiki)
-
----
 
 <div align="center">
 
