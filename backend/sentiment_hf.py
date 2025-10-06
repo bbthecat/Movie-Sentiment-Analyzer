@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import List, Dict, Any
+import os
 
 def _fallback_predict(texts: List[str]) -> List[Dict[str, Any]]:
     out = []
@@ -23,11 +24,19 @@ def _get_pipeline():
     global _pipeline
     if _pipeline is not None:
         return _pipeline
+    # Lightweight mode skips HF model to save memory
+    if os.getenv("LIGHTWEIGHT_MODE", "0") in {"1", "true", "True"}:
+        _pipeline = None
+        return None
     try:
         from transformers import pipeline
-        import os
         model_name = os.getenv("HF_MODEL_NAME", "distilbert-base-uncased-finetuned-sst-2-english")
-        _pipeline = pipeline("sentiment-analysis", model=model_name)
+        _pipeline = pipeline(
+            "sentiment-analysis",
+            model=model_name,
+            device=-1,  # CPU only
+            truncation=True
+        )
         return _pipeline
     except Exception:
         _pipeline = None
