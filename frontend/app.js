@@ -335,7 +335,8 @@ async function onAnalyzeText() {
 async function onAddComment(){
   const id = CURRENT_ID || el('imdbId').value.trim();
   if (!id) { toast('กรุณาเลือก/ดึงข้อมูลหนังก่อน','err'); return; }
-  const t = el('newComment').value.trim();
+  const tEl = el('newComment');
+  const t = tEl.value.trim();
   if (!t) { toast('กรุณาพิมพ์คอมเมนต์','err'); return; }
   try{
     await api(`/api/reviews/${id}/add`, {
@@ -343,9 +344,20 @@ async function onAddComment(){
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ text: t, source: 'user' })
     });
-    el('newComment').value = '';
+    tEl.value = '';
+    updateCommentCounter();
     await autoAnalyzeAndRefresh(id);
   }catch(e){ toast(e.message || e, 'err'); }
+}
+
+function updateCommentCounter(){
+  const tEl = el('newComment');
+  const cEl = el('commentCounter');
+  if (!tEl || !cEl) return;
+  const max = 280;
+  const len = (tEl.value || '').length;
+  cEl.textContent = `${len} / ${max}`;
+  cEl.style.color = len > max ? '#ff9aa2' : 'var(--muted)';
 }
 
 // Wire events
@@ -358,6 +370,17 @@ el('btnExport').onclick = onExport;
 el('btnOneText').onclick = onAnalyzeText;
 const addBtn = document.getElementById('btnAddComment');
 if (addBtn) addBtn.onclick = onAddComment;
+const newComment = document.getElementById('newComment');
+if (newComment){
+  newComment.addEventListener('input', updateCommentCounter);
+  newComment.addEventListener('keydown', (e)=>{
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      onAddComment();
+    }
+  });
+  updateCommentCounter();
+}
 
 // Support direct file click
 const fileInputLabel = document.querySelector('label.file');
