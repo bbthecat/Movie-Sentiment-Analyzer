@@ -100,12 +100,19 @@
 
         <div class="reviews">
           <h3>รายการรีวิว (ล่าสุด)</h3>
-          <div class="row" style="gap:10px; margin:8px 0 6px 0">
-            <input id="newComment" placeholder="พิมพ์คอมเมนต์ของคุณ..." />
-            <button id="btnAddComment" class="btn btn-secondary">
-              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              Add Comment
-            </button>
+          <div class="composer glass">
+            <textarea id="newComment" rows="3" placeholder="เขียนคอมเมนต์ของคุณที่นี่... (กด Ctrl+Enter เพื่อส่ง)"></textarea>
+            <div class="composer-foot">
+              <div class="muted">
+                <span id="commentCounter">0 / 280</span>
+              </div>
+              <div class="actions">
+                <button id="btnAddComment" class="btn btn-secondary">
+                  <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  Add Comment
+                </button>
+              </div>
+            </div>
           </div>
           <div id="reviewsList" class="reviews-list"></div>
         </div>
