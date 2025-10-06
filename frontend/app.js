@@ -332,6 +332,22 @@ async function onAnalyzeText() {
   }
 }
 
+async function onAddComment(){
+  const id = CURRENT_ID || el('imdbId').value.trim();
+  if (!id) { toast('กรุณาเลือก/ดึงข้อมูลหนังก่อน','err'); return; }
+  const t = el('newComment').value.trim();
+  if (!t) { toast('กรุณาพิมพ์คอมเมนต์','err'); return; }
+  try{
+    await api(`/api/reviews/${id}/add`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ text: t, source: 'user' })
+    });
+    el('newComment').value = '';
+    await autoAnalyzeAndRefresh(id);
+  }catch(e){ toast(e.message || e, 'err'); }
+}
+
 // Wire events
 el('btnSearch').onclick = onSearch;
 el('btnFetch').onclick = onFetch;
@@ -340,6 +356,8 @@ el('btnGenMock').onclick = onGenMock;
 el('btnFetchTMDb').onclick = onFetchTMDb;
 el('btnExport').onclick = onExport;
 el('btnOneText').onclick = onAnalyzeText;
+const addBtn = document.getElementById('btnAddComment');
+if (addBtn) addBtn.onclick = onAddComment;
 
 // Support direct file click
 const fileInputLabel = document.querySelector('label.file');
