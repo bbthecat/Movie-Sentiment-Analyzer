@@ -1,0 +1,8 @@
+# Development dependencies
+pytest>=7.0.0
+httpx>=0.24.0
+flake8>=5.0.0
+pytest-cov>=4.0.0
+safety>=2.0.0
+bandit>=1.7.0
+pip-audit>=2.0.0
