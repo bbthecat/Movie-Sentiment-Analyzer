@@ -272,6 +272,12 @@ def get_analysis(imdb_id: str):
         raise HTTPException(404, "No analysis found; run /api/analyze first")
     return {"imdb_id": imdb_id, "rows": rows}
 
+# Raw reviews (no labels) - helpful to fetch user-added comments directly
+@app.get("/api/reviews/{imdb_id}")
+def get_reviews_raw(imdb_id: str):
+    reviews = load_reviews(imdb_id) or []
+    return {"imdb_id": imdb_id, "count": len(reviews), "reviews": reviews}
+
 @app.get("/api/export/{imdb_id}.csv")
 def export_csv(imdb_id: str):
     rows = load_analysis(imdb_id)
