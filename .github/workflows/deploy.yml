@@ -31,10 +31,10 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/${{ github.repository }}:latest
-          ghcr.io/${{ github.repository }}:${{ github.sha }}
+          ghcr.io/${{ github.repository_owner }}/movie-sentiment-analyzer:latest
+          ghcr.io/${{ github.repository_owner }}/movie-sentiment-analyzer:${{ github.sha }}
     
     - name: Deploy notification
       run: |
         echo "🚀 Deployment completed successfully!"
-        echo "Image: ghcr.io/${{ github.repository }}:latest"
+        echo "Image: ghcr.io/${{ github.repository_owner }}/movie-sentiment-analyzer:latest"
