@@ -24,7 +24,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware for Vercel
+# Add permissive CORS (Render default is fine with this)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -40,7 +40,7 @@ app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 # Health check endpoint
 @app.get("/api/health")
 def health():
-    return {"ok": True, "status": "healthy", "platform": "vercel", "version": "1.0.0"}
+    return {"ok": True, "status": "healthy", "platform": "render", "version": "1.0.0"}
 
 # Root endpoint - serve frontend
 @app.get("/", response_class=HTMLResponse)
@@ -284,11 +284,4 @@ def analyze_text(payload: dict):
     pred = hf_predict([text])[0]
     return {"label": pred["label"], "score": pred["score"]}
 
-# Vercel serverless function handler
-from mangum import Mangum
-
-# Create ASGI adapter for Vercel
-handler = Mangum(app, lifespan="off")
-
-# Export handler for Vercel
-__all__ = ["handler"]
+# Cleaned up for Render: no serverless adapter needed
