@@ -1,0 +1,89 @@
+# Vercel ignore file
+# Files and directories to exclude from deployment
+
+# Development files
+.env
+.env.local
+.env.*.local
+*.log
+*.tmp
+
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+venv
+.venv
+ENV
+env.bak
+venv.bak
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache
+.hypothesis
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation
+*.md
+docs/
+TROUBLESHOOTING.md
+VERCEL-DEPLOY.md
+CI-CD-README.md
+README-CI-CD.md
+
+# CI/CD
+.github/
+scripts/
+Makefile
+*.ps1
+*.sh
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Data (will be created at runtime)
+backend/data/
+data/
+
+# Large model files (will be downloaded at runtime)
+*.bin
+*.safetensors
+models/
+
+# Test files
+tests/
+test-*.py
+*_test.py
+
+# Development requirements
+requirements-dev.txt
+requirements.txt
