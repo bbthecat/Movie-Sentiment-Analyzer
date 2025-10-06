@@ -32,7 +32,7 @@
 ### 🌐 API Integrations
 - **OMDb API** - Movie metadata and search
 - **TMDb API** - Real movie reviews import
-- **Hugging Face** - State-of-the-art sentiment analysis models
+- **Hugging Face** - State-of-the-art sentiment analysis models (supports lightweight mode for low-memory deploys)
 
 ---
 
@@ -153,9 +153,8 @@ movie-sentiment-analyzer/
 │   └── test_fetch.py            # API tests
 ├── 🐳 Dockerfile                # Docker configuration
 ├── 🐳 docker-compose.yml        # Docker Compose setup
+├── 🧾 render.yaml               # Render blueprint (Docker-based deploy)
 ├── 📋 requirements.txt          # Python dependencies
-├── ⚙️ vercel.json               # Vercel deployment config
-├── 📖 VERCEL-DEPLOY.md          # Vercel deployment guide
 └── 📄 env.example               # Environment variables template
 ```
 
@@ -163,24 +162,20 @@ movie-sentiment-analyzer/
 
 ## 🚀 Deployment
 
-### ⚡ Vercel (Recommended)
-```bash
-# 1. Push to GitHub
-git add .
-git commit -m "Ready for deployment"
-git push origin main
+### 🟣 Render (Docker, using render.yaml)
+Option A — One‑click via Blueprint:
+1. Push this repo to GitHub
+2. In Render, click "New +" → "Blueprint" and point to your repo
+3. Render will detect `render.yaml` and create a Web Service
+4. Set environment variables (see below). The blueprint sets `LIGHTWEIGHT_MODE=1` by default to fit 512MB plan
+5. Deploy. Health check path: `/api/health`
 
-# 2. Deploy to Vercel
-# - Go to https://vercel.com/dashboard
-# - Click "New Project"
-# - Import your GitHub repo
-# - Set environment variables
-# - Deploy!
-```
+Option B — Manual Web Service from Dockerfile:
+1. New → Web Service → Build from Dockerfile (root)
+2. Set `PORT=8000` and any API keys
+3. Start command (if overriding): `uvicorn backend.app:app --host 0.0.0.0 --port $PORT`
 
-📖 **[Complete Vercel Deployment Guide](VERCEL-DEPLOY.md)**
-
-### 🐳 Docker
+### 🐳 Docker (local)
 ```bash
 # Build and run with Docker Compose
 docker-compose up --build
@@ -203,6 +198,10 @@ TMDB_API_KEY=your_tmdb_api_key_here
 # Optional Settings
 HF_MODEL_NAME=distilbert-base-uncased-finetuned-sst-2-english
 DATA_DIR=backend/data
+PORT=8000
+
+# Memory-saving mode (recommended for Render free tier 512MB)
+LIGHTWEIGHT_MODE=1
 ```
 
 ### API Keys Setup
@@ -229,7 +228,7 @@ pytest tests/test_analyze.py
 ## 📈 Performance
 
 - **⚡ Fast Response Times** - Optimized FastAPI backend
-- **🧠 Efficient AI Models** - Lightweight sentiment analysis
+- **🧠 Efficient AI Models** - Lightweight sentiment analysis (fallback mode for low RAM)
 - **💾 Smart Caching** - Reduces API calls and improves speed
 - **📱 Responsive Design** - Works on all devices
 
