@@ -206,8 +206,11 @@ def reviews_import_tmdb(imdb_id: str, max_pages: int = 1):
                 })
         if not rows:
             return {"ok": True, "count": 0, "msg": "No reviews on TMDb"}
-        save_reviews(imdb_id, rows)
-        return {"ok": True, "count": len(rows)}
+        # Merge TMDb reviews into existing instead of overwriting
+        existing = load_reviews(imdb_id) or []
+        merged = existing + rows
+        save_reviews(imdb_id, merged)
+        return {"ok": True, "count": len(rows), "total": len(merged)}
     except tmdb_client.TMDbUnavailable as e:
         raise HTTPException(503, str(e))
     except Exception as e:
