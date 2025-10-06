@@ -10,6 +10,8 @@ services:
         value: "1"
       - key: PORT
         value: "8000"
+      - key: LIGHTWEIGHT_MODE
+        value: "1"
     
     # Render uses the Dockerfile at repo root by default
     # If you later need to override the start command, uncomment below:
