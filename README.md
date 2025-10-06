@@ -9,8 +9,6 @@
 
 **AI-powered movie sentiment analysis with beautiful web interface**
 
-[🚀 Live Demo](#) • [📖 Documentation](#) • [🐛 Report Bug](#) • [💡 Request Feature](#)
-
 </div>
 
 ---
