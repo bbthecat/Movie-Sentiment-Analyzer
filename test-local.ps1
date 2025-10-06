@@ -16,6 +16,7 @@ try {
 # Test 2: Run Tests
 Write-Host "`n🧪 Running tests..." -ForegroundColor Yellow
 try {
+    $env:PYTHONPATH="."
     py -m pytest tests/ -v
     Write-Host "✅ Tests passed" -ForegroundColor Green
 } catch {

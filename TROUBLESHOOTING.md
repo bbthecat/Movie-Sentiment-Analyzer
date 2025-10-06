@@ -13,6 +13,15 @@
 **Solution**:
 - ✅ Fixed: Added pytest installation to CI workflow
 
+**Problem**: `ModuleNotFoundError: No module named 'httpx'`
+**Solution**:
+- ✅ Fixed: Added httpx to requirements.txt and CI workflow
+- ✅ Fixed: Added PYTHONPATH=. to pytest command
+
+**Problem**: `ModuleNotFoundError: No module named 'backend'`
+**Solution**:
+- ✅ Fixed: Added PYTHONPATH=. to pytest command in CI workflow
+
 ### 2. Deploy Workflow Errors
 
 **Problem**: Permission denied when pushing to GitHub Container Registry

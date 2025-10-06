@@ -17,7 +17,7 @@ fi
 # Test 2: Run Tests
 echo ""
 echo "🧪 Running tests..."
-if python -m pytest tests/ -v; then
+if PYTHONPATH=. python -m pytest tests/ -v; then
     echo "✅ Tests passed"
 else
     echo "❌ Tests failed"
