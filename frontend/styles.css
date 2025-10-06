@@ -105,6 +105,18 @@ body{
 .scorebar{ height:8px; border-radius:6px; background:#0c1322; overflow:hidden; border:1px solid rgba(255,255,255,.06) }
 .scorebar>span{ display:block; height:100%; background:linear-gradient(90deg, rgba(106,161,255,.6), rgba(43,110,242,.9)) }
 
+/* Composer */
+.composer{ border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px; margin:10px 0; backdrop-filter: blur(8px) }
+.composer textarea{
+  width:100%; resize:vertical; min-height:72px; max-height:220px;
+  border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+  background:var(--panel); color:var(--text); outline:none;
+}
+.composer textarea::placeholder{ color:var(--muted) }
+.composer-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px }
+.composer-foot .muted{ color:var(--muted); font-size:12px }
+.composer-foot .actions{ display:flex; gap:8px }
+
 /* Toasts */
 .toast-wrap{ position:fixed; right:16px; bottom:16px; display:grid; gap:8px; z-index:9999 }
 .toast{ background:var(--panel2); border:1px solid var(--border); color:var(--text);
