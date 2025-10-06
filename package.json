@@ -1,0 +1,23 @@
+{
+  "name": "movie-sentiment-analyzer",
+  "version": "1.0.0",
+  "description": "AI-powered movie sentiment analysis API",
+  "main": "app.py",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "start": "python app.py"
+  },
+  "keywords": [
+    "fastapi",
+    "sentiment-analysis",
+    "movie",
+    "ai",
+    "vercel"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "python": "3.11"
+  }
+}
