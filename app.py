@@ -40,7 +40,7 @@ app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 # Health check endpoint
 @app.get("/api/health")
 def health():
-    return {"ok": True, "status": "healthy", "platform": "vercel"}
+    return {"ok": True, "status": "healthy", "platform": "vercel", "version": "1.0.0"}
 
 # Root endpoint - serve frontend
 @app.get("/", response_class=HTMLResponse)
@@ -285,5 +285,10 @@ def analyze_text(payload: dict):
     return {"label": pred["label"], "score": pred["score"]}
 
 # Vercel serverless function handler
-def handler(request):
-    return app(request.scope, request.receive, request.send)
+from mangum import Mangum
+
+# Create ASGI adapter for Vercel
+handler = Mangum(app, lifespan="off")
+
+# Export handler for Vercel
+__all__ = ["handler"]

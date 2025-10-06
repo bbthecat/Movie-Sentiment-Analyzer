@@ -156,8 +156,8 @@ movie-sentiment-analyzer/
 ├── 🐳 Dockerfile                # Docker configuration
 ├── 🐳 docker-compose.yml        # Docker Compose setup
 ├── 📋 requirements.txt          # Python dependencies
-├── ⚙️ render.yaml               # Render deployment config
-├── 📖 RENDER-DEPLOY.md          # Render deployment guide
+├── ⚙️ vercel.json               # Vercel deployment config
+├── 📖 VERCEL-DEPLOY.md          # Vercel deployment guide
 └── 📄 env.example               # Environment variables template
 ```
 
@@ -165,22 +165,22 @@ movie-sentiment-analyzer/
 
 ## 🚀 Deployment
 
-### 🌐 Render (Recommended)
+### ⚡ Vercel (Recommended)
 ```bash
 # 1. Push to GitHub
 git add .
 git commit -m "Ready for deployment"
 git push origin main
 
-# 2. Connect to Render
-# - Go to https://dashboard.render.com
-# - Create new Blueprint
-# - Connect your GitHub repo
+# 2. Deploy to Vercel
+# - Go to https://vercel.com/dashboard
+# - Click "New Project"
+# - Import your GitHub repo
 # - Set environment variables
 # - Deploy!
 ```
 
-📖 **[Complete Render Deployment Guide](RENDER-DEPLOY.md)**
+📖 **[Complete Vercel Deployment Guide](VERCEL-DEPLOY.md)**
 
 ### 🐳 Docker
 ```bash
