@@ -365,17 +365,10 @@ function updateTextCounter() {
   const counter = el('textCounter');
   if (!textArea || !counter) return;
   
-  const length = textArea.value.length;
-  counter.textContent = length;
-  
-  // เปลี่ยนสีตามจำนวนตัวอักษร
-  if (length > 500) {
-    counter.style.color = '#ff6b6b';
-  } else if (length > 300) {
-    counter.style.color = '#ffa726';
-  } else {
-    counter.style.color = 'var(--muted)';
-  }
+  const max = 280;
+  const len = (textArea.value || '').length;
+  counter.textContent = `${len} / ${max}`;
+  counter.style.color = len > max ? '#ff9aa2' : 'var(--muted)';
 }
 
 // Wire events
