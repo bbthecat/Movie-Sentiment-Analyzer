@@ -119,73 +119,13 @@
       </section>
 
       <section class="card glass lift">
-        <div class="section-header">
-          <h2>🧠 ทดลองวิเคราะห์ข้อความเดี่ยว</h2>
-          <p class="section-desc">พิมพ์ข้อความเพื่อทดสอบการวิเคราะห์ความรู้สึกแบบเรียลไทม์</p>
-        </div>
-        
-        <div class="text-analysis-container">
-          <div class="input-section">
-            <div class="input-wrapper">
-              <textarea id="oneText" placeholder="พิมพ์ข้อความที่นี่ เช่น: 'This movie is absolutely amazing!' หรือ 'หนังเรื่องนี้แย่มาก'..." rows="3"></textarea>
-              <div class="input-footer">
-                <div class="char-counter">
-                  <span id="textCounter">0</span> ตัวอักษร
-                </div>
-                <button id="btnOneText" class="btn btn-primary btn-analyze">
-                  <svg viewBox="0 0 24 24" width="18" height="18">
-                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-5 0v-15A2.5 2.5 0 0 1 9.5 2z" fill="currentColor"/>
-                    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z" fill="currentColor"/>
-                  </svg>
-                  วิเคราะห์
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div id="analysisResult" class="analysis-result hidden">
-            <div class="result-header">
-              <h3>ผลการวิเคราะห์</h3>
-              <div class="confidence-badge">
-                <span class="confidence-label">ความมั่นใจ:</span>
-                <span id="confidenceScore" class="confidence-value">0%</span>
-              </div>
-            </div>
-            
-            <div class="sentiment-display">
-              <div class="sentiment-card">
-                <div class="sentiment-icon">
-                  <span id="sentimentEmoji">😐</span>
-                </div>
-                <div class="sentiment-info">
-                  <div class="sentiment-label" id="sentimentLabel">Neutral</div>
-                  <div class="sentiment-score" id="sentimentScore">0.50</div>
-                </div>
-              </div>
-              
-              <div class="sentiment-bar">
-                <div class="bar-track">
-                  <div id="sentimentBar" class="bar-fill"></div>
-                </div>
-                <div class="bar-labels">
-                  <span class="label-negative">Negative</span>
-                  <span class="label-neutral">Neutral</span>
-                  <span class="label-positive">Positive</span>
-                </div>
-              </div>
-            </div>
-            
-            <div class="analysis-details">
-              <div class="detail-item">
-                <span class="detail-label">ข้อความที่วิเคราะห์:</span>
-                <span id="analyzedText" class="detail-value"></span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">เวลาที่วิเคราะห์:</span>
-                <span id="analysisTime" class="detail-value"></span>
-              </div>
-            </div>
-          </div>
+        <h2>ทดลองวิเคราะห์ข้อความเดี่ยว</h2>
+        <div class="row">
+          <input id="oneText" placeholder="พิมพ์ประโยคที่นี่..." />
+          <button id="btnOneText" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 12h18M12 3v18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Analyze
+          </button>
         </div>
       </section>
     </main>
