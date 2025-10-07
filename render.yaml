@@ -11,9 +11,7 @@ services:
       - key: PORT
         value: "8000"
       - key: LIGHTWEIGHT_MODE
-        value: "0"  # เปิดใช้ AI model
-      - key: HF_MODEL_NAME
-        value: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+        value: "1"
     
     # Render uses the Dockerfile at repo root by default
     # If you later need to override the start command, uncomment below:
