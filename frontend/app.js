@@ -360,6 +360,24 @@ function updateCommentCounter(){
   cEl.style.color = len > max ? '#ff9aa2' : 'var(--muted)';
 }
 
+function updateTextCounter() {
+  const textArea = el('oneText');
+  const counter = el('textCounter');
+  if (!textArea || !counter) return;
+  
+  const length = textArea.value.length;
+  counter.textContent = length;
+  
+  // เปลี่ยนสีตามจำนวนตัวอักษร
+  if (length > 500) {
+    counter.style.color = '#ff6b6b';
+  } else if (length > 300) {
+    counter.style.color = '#ffa726';
+  } else {
+    counter.style.color = 'var(--muted)';
+  }
+}
+
 // Wire events
 el('btnSearch').onclick = onSearch;
 el('btnFetch').onclick = onFetch;
@@ -368,6 +386,20 @@ el('btnGenMock').onclick = onGenMock;
 el('btnFetchTMDb').onclick = onFetchTMDb;
 el('btnExport').onclick = onExport;
 el('btnOneText').onclick = onAnalyzeText;
+
+// Text analysis events
+const oneTextArea = el('oneText');
+if (oneTextArea) {
+  oneTextArea.addEventListener('input', updateTextCounter);
+  oneTextArea.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      onAnalyzeText();
+    }
+  });
+  updateTextCounter();
+}
+
 const addBtn = document.getElementById('btnAddComment');
 if (addBtn) addBtn.onclick = onAddComment;
 const newComment = document.getElementById('newComment');
