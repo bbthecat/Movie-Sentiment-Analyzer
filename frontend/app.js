@@ -319,105 +319,16 @@ async function onExport() {
 
 async function onAnalyzeText() {
   const t = el('oneText').value.trim();
-  if (!t) {
-    toast('กรุณาพิมพ์ข้อความก่อนวิเคราะห์', 'err');
-    return;
-  }
-  
+  if (!t) return;
   try {
     const data = await api('/api/analyze-text', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({text: t})
     });
-    
-    // แสดงผลการวิเคราะห์แบบสวยงาม
-    displayAnalysisResult(t, data);
-    toast('วิเคราะห์สำเร็จ!', 'ok');
+    toast(`Label: ${data.label} • Score: ${Number(data.score).toFixed(2)}`, 'ok');
   } catch (e) {
     toast(e.message || e, 'err');
-  }
-}
-
-function displayAnalysisResult(text, data) {
-  const resultDiv = el('analysisResult');
-  const sentimentLabel = el('sentimentLabel');
-  const sentimentScore = el('sentimentScore');
-  const sentimentEmoji = el('sentimentEmoji');
-  const confidenceScore = el('confidenceScore');
-  const sentimentBar = el('sentimentBar');
-  const analyzedText = el('analyzedText');
-  const analysisTime = el('analysisTime');
-  
-  // ซ่อนผลลัพธ์เก่าและแสดงผลใหม่
-  resultDiv.classList.remove('hidden');
-  
-  // กำหนดข้อมูลพื้นฐาน
-  const label = data.label || 'NEUTRAL';
-  const score = Number(data.score || 0.5);
-  const confidence = Math.round(score * 100);
-  
-  // อัปเดตข้อมูล
-  sentimentLabel.textContent = label;
-  sentimentScore.textContent = score.toFixed(3);
-  confidenceScore.textContent = `${confidence}%`;
-  analyzedText.textContent = text;
-  analysisTime.textContent = new Date().toLocaleString('th-TH');
-  
-  // กำหนด emoji และสีตาม sentiment
-  let emoji = '😐';
-  let sentimentClass = 'sentiment-neutral';
-  
-  if (label.toUpperCase().includes('POSITIVE')) {
-    emoji = '😊';
-    sentimentClass = 'sentiment-positive';
-  } else if (label.toUpperCase().includes('NEGATIVE')) {
-    emoji = '😞';
-    sentimentClass = 'sentiment-negative';
-  }
-  
-  sentimentEmoji.textContent = emoji;
-  
-  // กำหนดสีของ progress bar
-  let barWidth = 50; // neutral position
-  let barColor = 'var(--neu)';
-  
-  if (label.toUpperCase().includes('POSITIVE')) {
-    barWidth = 25 + (score * 50); // 25% to 75%
-    barColor = 'var(--pos)';
-  } else if (label.toUpperCase().includes('NEGATIVE')) {
-    barWidth = 25 - (score * 50); // 0% to 25%
-    barColor = 'var(--neg)';
-  }
-  
-  // อัปเดต progress bar
-  sentimentBar.style.width = `${Math.max(10, Math.min(90, barWidth))}%`;
-  sentimentBar.style.background = `linear-gradient(90deg, ${barColor}, ${barColor}dd)`;
-  
-  // เพิ่ม class สำหรับสี
-  resultDiv.className = `analysis-result ${sentimentClass}`;
-  
-  // Animation effect
-  setTimeout(() => {
-    sentimentBar.style.transition = 'all 0.8s ease';
-  }, 100);
-}
-
-function updateTextCounter() {
-  const textArea = el('oneText');
-  const counter = el('textCounter');
-  if (!textArea || !counter) return;
-  
-  const length = textArea.value.length;
-  counter.textContent = length;
-  
-  // เปลี่ยนสีตามจำนวนตัวอักษร
-  if (length > 500) {
-    counter.style.color = '#ff6b6b';
-  } else if (length > 300) {
-    counter.style.color = '#ffa726';
-  } else {
-    counter.style.color = 'var(--muted)';
   }
 }
 
@@ -457,20 +368,6 @@ el('btnGenMock').onclick = onGenMock;
 el('btnFetchTMDb').onclick = onFetchTMDb;
 el('btnExport').onclick = onExport;
 el('btnOneText').onclick = onAnalyzeText;
-
-// Text analysis events
-const oneTextArea = el('oneText');
-if (oneTextArea) {
-  oneTextArea.addEventListener('input', updateTextCounter);
-  oneTextArea.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      onAnalyzeText();
-    }
-  });
-  updateTextCounter();
-}
-
 const addBtn = document.getElementById('btnAddComment');
 if (addBtn) addBtn.onclick = onAddComment;
 const newComment = document.getElementById('newComment');
