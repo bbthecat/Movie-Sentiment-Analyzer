@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List, Dict, Any
 import os
-import gc  # สำหรับ garbage collection
+import gc
 
 def _fallback_predict(texts: List[str]) -> List[Dict[str, Any]]:
     out = []
@@ -31,17 +31,16 @@ def _get_pipeline():
         return None
     try:
         from transformers import pipeline
-        from .lightweight_models import get_lightweight_model, get_optimized_config
+        from .memory_config import should_use_ai_model, get_ultra_lightweight_config, get_lightweight_model_name
         
-        # เลือก model ที่เหมาะสมกับ RAM
-        model_name = get_lightweight_model()
-        if model_name is None:
-            print("Not enough RAM for AI model, using fallback mode")
+        # ตรวจสอบ RAM ก่อนโหลด model
+        if not should_use_ai_model():
             _pipeline = None
             return None
-            
-        # ใช้การตั้งค่าที่เหมาะสม
-        config = get_optimized_config()
+        
+        # ใช้การตั้งค่าที่ประหยัด RAM สูงสุด
+        model_name = get_lightweight_model_name()
+        config = get_ultra_lightweight_config()
         
         _pipeline = pipeline(
             "sentiment-analysis",
@@ -58,18 +57,18 @@ def predict(texts: List[str]) -> List[Dict[str, Any]]:
     if pipe is None:
         return _fallback_predict(texts)
     
-    # จำกัดความยาวของข้อความเพื่อประหยัด memory
-    MAX_TEXT_LENGTH = 128  # ลดจาก 500 เป็น 128
+    # จำกัดความยาวของข้อความเพื่อประหยัด memory สูงสุด
+    MAX_TEXT_LENGTH = 32  # ลดมากเพื่อประหยัด RAM
     truncated_texts = [text[:MAX_TEXT_LENGTH] if len(text) > MAX_TEXT_LENGTH else text for text in texts]
     
     try:
-        # ประมวลผลทีละข้อความเพื่อประหยัด memory
+        # ประมวลผลทีละข้อความเพื่อประหยัด memory สูงสุด
         out = []
         for text in truncated_texts:
             try:
                 result = pipe(text)  # ประมวลผลทีละข้อความ
                 if isinstance(result, list):
-                    result = result[0]  # เอาแค่ผลลัพธ์แรก
+                    result = result[0]
                 
                 label = result.get("label", "").upper()
                 score = float(result.get("score", 0.0))
